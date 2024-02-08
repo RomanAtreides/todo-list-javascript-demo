@@ -3,6 +3,7 @@
 // Select elements
 const form = document.getElementById('todoform');
 const todoInput = document.getElementById('newtodo');
+const todosListEl = document.getElementById('todos-list');
 
 // Vars
 let todos = [];
@@ -12,6 +13,7 @@ form.addEventListener('submit', function (event) {
   event.preventDefault();
 
   saveTodo();
+  renderTodos();
 });
 
 // Save Todo
@@ -42,4 +44,24 @@ function saveTodo() {
   }
 }
 
-/* 12:36 */
+// Render todos
+function renderTodos() {
+  // Clear element before a re-render
+  todosListEl.innerHTML = '';
+
+  // Render todos
+  todos.forEach((todo, index) => {
+    todosListEl.innerHTML += `
+      <div class="todo" id=${index}>
+        <i class="bi ${
+          todo.checked ? 'bi-check-circle-fill' : 'bi-circle'
+        }" style="color: ${todo.color}"></i>
+        <p class="checked">${todo.value}</p>
+        <i class="bi bi-pencil-square"></i>
+        <i class="bi bi-trash"></i>
+      </div>
+    `;
+  });
+}
+
+/* 26:46 */
