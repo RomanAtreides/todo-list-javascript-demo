@@ -52,13 +52,13 @@ function renderTodos() {
   // Render todos
   todos.forEach((todo, index) => {
     todosListEl.innerHTML += `
-      <div class="todo" id=${index}>
-        <i class="bi ${
+      <div class='todo' id=${index}>
+        <i class='bi ${
           todo.checked ? 'bi-check-circle-fill' : 'bi-circle'
-        }" style="color: ${todo.color}"></i>
-        <p class="">${todo.value}</p>
-        <i class="bi bi-pencil-square"></i>
-        <i class="bi bi-trash"></i>
+        }' style='color: ${todo.color}' data-action='check'></i>
+        <p class='' data-action='check'>${todo.value}</p>
+        <i class='bi bi-pencil-square' data-action='edit'></i>
+        <i class='bi bi-trash' data-action='delete'></i>
       </div>
     `;
   });
@@ -71,10 +71,26 @@ todosListEl.addEventListener('click', (event) => {
 
   if (parentElement.className !== 'todo') return;
 
+  // Todo id
   const todo = parentElement;
   const todoId = Number(todo.id);
 
-  console.log(parentElement);
+  // Target action
+  const action = target.dataset.action;
+
+  action === 'check' && checkTodo(todoId);
+  // action === 'edit' && editTodo(todoId);
+  // action === 'delete' && deleteTodo(todoId);
 });
 
-/* 26:46 */
+// Check todo
+function checkTodo(todoId) {
+  todos = todos.map((todo, index) => ({
+    ...todo,
+    checked: index === todoId ? !todo.checked : todo.checked,
+  }));
+
+  renderTodos();
+}
+
+/* 52:08 */
