@@ -56,12 +56,25 @@ function renderTodos() {
         <i class="bi ${
           todo.checked ? 'bi-check-circle-fill' : 'bi-circle'
         }" style="color: ${todo.color}"></i>
-        <p class="checked">${todo.value}</p>
+        <p class="">${todo.value}</p>
         <i class="bi bi-pencil-square"></i>
         <i class="bi bi-trash"></i>
       </div>
     `;
   });
 }
+
+// Click event listener for all the todos
+todosListEl.addEventListener('click', (event) => {
+  const target = event.target;
+  const parentElement = target.parentNode;
+
+  if (parentElement.className !== 'todo') return;
+
+  const todo = parentElement;
+  const todoId = Number(todo.id);
+
+  console.log(parentElement);
+});
 
 /* 26:46 */
