@@ -89,7 +89,7 @@ todosListEl.addEventListener('click', (event) => {
 
   action === 'check' && checkTodo(todoId);
   action === 'edit' && editTodo(todoId);
-  // action === 'delete' && deleteTodo(todoId);
+  action === 'delete' && deleteTodo(todoId);
 });
 
 // Check todo
@@ -106,6 +106,15 @@ function checkTodo(todoId) {
 function editTodo(todoId) {
   todoInput.value = todos[todoId].value;
   editTodoId = todoId;
+}
+
+// Delete todo
+function deleteTodo(todoId) {
+  todos = todos.filter((todo, index) => index !== todoId);
+  editTodoId = -1;
+
+  // Re-render
+  renderTodos();
 }
 
 /* 52:08 */
