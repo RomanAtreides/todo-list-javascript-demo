@@ -7,6 +7,7 @@ const todosListEl = document.getElementById('todos-list');
 
 // Vars
 let todos = [];
+let editTodoId = -1;
 
 // Form submit
 form.addEventListener('submit', function (event) {
@@ -24,22 +25,30 @@ function saveTodo() {
   const isEmpty = todoValue === '';
 
   // Check for duplicate todos
-  const isDuplicate = todos.some(
-    (todo) => todo.value.toUpperCase() === todoValue.toUpperCase()
-  );
+  const isDuplicate = todos.some((todo) => todo.value.toUpperCase() === todoValue.toUpperCase());
 
   if (isEmpty) {
     alert("Todo's input is empty!");
   } else if (isDuplicate) {
     alert('Todo already exists!');
   } else {
-    const todo = {
-      value: todoValue,
-      checked: false,
-      color: '#' + Math.floor(Math.random() * 16777215).toString(16),
-    };
+    if (editTodoId >= 0) {
+      // Update the edit todo
+      // Здесь мы возвращаем объект без использования ключевого слова return, поэтому его надо заключить в круглые скобки
+      todos = todos.map((todo, index) => ({
+        ...todo,
+        value: index === editTodoId ? todoValue : todo.value,
+      }));
+      editTodoId = -1;
+    } else {
+      const todo = {
+        value: todoValue,
+        checked: false,
+        color: '#' + Math.floor(Math.random() * 16777215).toString(16),
+      };
 
-    todos.push(todo);
+      todos.push(todo);
+    }
     todoInput.value = '';
   }
 }
@@ -53,9 +62,9 @@ function renderTodos() {
   todos.forEach((todo, index) => {
     todosListEl.innerHTML += `
       <div class='todo' id=${index}>
-        <i class='bi ${
-          todo.checked ? 'bi-check-circle-fill' : 'bi-circle'
-        }' style='color: ${todo.color}' data-action='check'></i>
+        <i class='bi ${todo.checked ? 'bi-check-circle-fill' : 'bi-circle'}' style='color: ${
+      todo.color
+    }' data-action='check'></i>
         <p class='' data-action='check'>${todo.value}</p>
         <i class='bi bi-pencil-square' data-action='edit'></i>
         <i class='bi bi-trash' data-action='delete'></i>
@@ -79,7 +88,7 @@ todosListEl.addEventListener('click', (event) => {
   const action = target.dataset.action;
 
   action === 'check' && checkTodo(todoId);
-  // action === 'edit' && editTodo(todoId);
+  action === 'edit' && editTodo(todoId);
   // action === 'delete' && deleteTodo(todoId);
 });
 
@@ -91,6 +100,12 @@ function checkTodo(todoId) {
   }));
 
   renderTodos();
+}
+
+// Edit a todo
+function editTodo(todoId) {
+  todoInput.value = todos[todoId].value;
+  editTodoId = todoId;
 }
 
 /* 52:08 */
