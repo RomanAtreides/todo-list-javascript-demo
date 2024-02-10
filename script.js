@@ -4,6 +4,7 @@
 const form = document.getElementById('todoform');
 const todoInput = document.getElementById('newtodo');
 const todosListEl = document.getElementById('todos-list');
+const notificationEl = document.querySelector('.notification');
 
 // Vars
 let todos = [];
@@ -28,9 +29,11 @@ function saveTodo() {
   const isDuplicate = todos.some((todo) => todo.value.toUpperCase() === todoValue.toUpperCase());
 
   if (isEmpty) {
-    alert("Todo's input is empty!");
+    // alert("Todo's input is empty!");
+    showNotification("Todo's input is empty!");
   } else if (isDuplicate) {
-    alert('Todo already exists!');
+    // alert('Todo already exists!');
+    showNotification('Todo already exists!');
   } else {
     if (editTodoId >= 0) {
       // Update the edit todo
@@ -117,4 +120,16 @@ function deleteTodo(todoId) {
   renderTodos();
 }
 
-/* 52:08 */
+// Show a notification
+function showNotification(msg) {
+  // Change the notification
+  notificationEl.innerHTML = msg;
+
+  // Notification enter
+  notificationEl.classList.add('notif-enter');
+
+  // Notification leave
+  setTimeout(() => {
+    notificationEl.classList.remove('notif-enter');
+  }, 2000);
+}
